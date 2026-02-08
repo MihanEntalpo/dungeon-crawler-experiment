@@ -16,25 +16,6 @@
   window.addEventListener("resize", resize);
   resize();
 
-  // ---------- Utils ----------
-  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const hypot = Math.hypot;
-  const TAU = Math.PI * 2;
-
-  function rndInt(a, b) { return (a + Math.floor(Math.random() * (b - a + 1))); }
-  function hash2(x, y) {
-    let h = x * 374761393 + y * 668265263;
-    h = (h ^ (h >> 13)) * 1274126177;
-    return (h ^ (h >> 16)) >>> 0;
-  }
-  function angleDiff(a, b) {
-    let d = (a - b) % TAU;
-    if (d > Math.PI) d -= TAU;
-    if (d < -Math.PI) d += TAU;
-    return d;
-  }
-
   // ---------- Procedural dungeon: maze + rooms + loops ----------
   // Base: DFS perfect maze on cell grid -> tile grid.
   // Then: carve rooms + add loops + reduce dead-ends.
