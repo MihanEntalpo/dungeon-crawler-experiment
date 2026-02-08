@@ -76,6 +76,9 @@ class InputManager {
    * @param {number} dpr
    */
   setScreen(screenW, screenH, dpr) {
+    this.isTouch = ("ontouchstart" in window)
+      || (navigator.maxTouchPoints > 0)
+      || (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
     this.layout.screenW = screenW;
     this.layout.screenH = screenH;
     this.layout.dpr = dpr;

@@ -76,6 +76,7 @@ class Game {
     this.camera.y = ty;
 
     this.last = performance.now();
+    this.paused = false;
 
     window.addEventListener("resize", () => this.resize());
     this.resize();
@@ -189,6 +190,7 @@ class Game {
   }
 
   frame(now) {
+    if (this.paused) return;
     const dt = clamp((now - this.last) / 1000, 0, 0.033);
     this.last = now;
 
@@ -200,6 +202,12 @@ class Game {
 
   run() {
     this.canvas.tabIndex = 0;
+    requestAnimationFrame((t) => this.frame(t));
+  }
+
+  resume() {
+    this.paused = false;
+    this.last = performance.now();
     requestAnimationFrame((t) => this.frame(t));
   }
 }

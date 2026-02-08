@@ -5,11 +5,14 @@
   const menu = document.getElementById("menu");
   const btnNew = document.getElementById("btnNew");
   const btnLoad = document.getElementById("btnLoad");
+  const pause = document.getElementById("pause");
+  const btnResume = document.getElementById("btnResume");
 
   localforage.config({ name: "dungeon-crawler-experiment", storeName: "save" });
 
   let cachedMap = null;
   let cachedEntities = null;
+  let game = null;
 
   try {
     cachedMap = await localforage.getItem("map_v1");
@@ -21,10 +24,38 @@
 
   if (!cachedMap) btnLoad.disabled = true;
 
-  function startGame(mapData, entityData) {
+  async function enterFullscreenIfMobile() {
+    const isTouch = ("ontouchstart" in window)
+      || (navigator.maxTouchPoints > 0)
+      || (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+    if (!isTouch) return;
+    try {
+      await document.documentElement.requestFullscreen?.();
+    } catch (_err) {
+      // ignore fullscreen errors
+    }
+  }
+
+  async function startGame(mapData, entityData) {
     menu.classList.add("hidden");
-    const game = new Game(canvas, mapData, entityData);
+    pause.classList.add("hidden");
+    await enterFullscreenIfMobile();
+    game = new Game(canvas, mapData, entityData);
     game.run();
+  }
+
+  function pauseGame() {
+    if (!game) return;
+    game.paused = true;
+    pause.classList.remove("hidden");
+  }
+
+  async function resumeGame() {
+    if (!game) return;
+    pause.classList.add("hidden");
+    await enterFullscreenIfMobile();
+    game.resume();
+    canvas.focus?.();
   }
 
   btnNew.addEventListener("click", async () => {
@@ -51,5 +82,21 @@
     }
     if (!mapData) return;
     startGame(mapData, entityData);
+  });
+
+  btnResume.addEventListener("click", () => resumeGame());
+
+  window.addEventListener("blur", () => pauseGame());
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) pauseGame();
+  });
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) pauseGame();
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (!game) return;
+    if (pause.classList.contains("hidden")) pauseGame();
+    else resumeGame();
   });
 })();
