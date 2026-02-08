@@ -44,7 +44,7 @@ class Game {
     } : playerSpawn;
     this.player = new Player(playerInit);
     this.world.setPlayer(this.player);
-    this.world.hud = new HUD(this.player);
+    this.world.hud = new HUD(this.player, this.input);
 
     this.enemies = [];
     const enemiesData = entityData?.enemies || null;
@@ -88,6 +88,7 @@ class Game {
     this.canvas.width = this.W;
     this.canvas.height = this.H;
     this.input.setDPR(this.DPR);
+    this.input.setScreen(this.W / this.DPR, this.H / this.DPR, this.DPR);
   }
 
   pickMobType() {

@@ -33,18 +33,27 @@ class Player extends Actor {
     const input = world.input;
     const camera = world.camera;
     const map = world.map;
-    const mxWorld = camera.x + (input.mouseX / input.dpr);
-    const myWorld = camera.y + (input.mouseY / input.dpr);
-    this.facing = Math.atan2(myWorld - this.y, mxWorld - this.x);
+    if (input.isTouch && input.lookActive) {
+      this.facing = input.lookAngle;
+    } else {
+      const mxWorld = camera.x + (input.mouseX / input.dpr);
+      const myWorld = camera.y + (input.mouseY / input.dpr);
+      this.facing = Math.atan2(myWorld - this.y, mxWorld - this.x);
+    }
 
     const accel = 1560;
     const maxSpd = 320;
 
     let ax = 0, ay = 0;
-    if (input.keys.has("ArrowLeft") || input.keys.has("a") || input.keys.has("A") || input.keys.has("ф") || input.keys.has("Ф"))  ax -= 1;
-    if (input.keys.has("ArrowRight")|| input.keys.has("d") || input.keys.has("D") || input.keys.has("в") || input.keys.has("В"))  ax += 1;
-    if (input.keys.has("ArrowUp")   || input.keys.has("w") || input.keys.has("W") || input.keys.has("ц") || input.keys.has("Ц"))  ay -= 1;
-    if (input.keys.has("ArrowDown") || input.keys.has("s") || input.keys.has("S") || input.keys.has("ы") || input.keys.has("Ы"))  ay += 1;
+    if (input.isTouch && input.moveActive) {
+      ax = input.moveVec.x;
+      ay = input.moveVec.y;
+    } else {
+      if (input.keys.has("ArrowLeft") || input.keys.has("a") || input.keys.has("A") || input.keys.has("ф") || input.keys.has("Ф"))  ax -= 1;
+      if (input.keys.has("ArrowRight")|| input.keys.has("d") || input.keys.has("D") || input.keys.has("в") || input.keys.has("В"))  ax += 1;
+      if (input.keys.has("ArrowUp")   || input.keys.has("w") || input.keys.has("W") || input.keys.has("ц") || input.keys.has("Ц"))  ay -= 1;
+      if (input.keys.has("ArrowDown") || input.keys.has("s") || input.keys.has("S") || input.keys.has("ы") || input.keys.has("Ы"))  ay += 1;
+    }
 
     const len = Math.hypot(ax, ay);
     if (len > 0) { ax /= len; ay /= len; }
@@ -64,9 +73,10 @@ class Player extends Actor {
 
     this.atkCooldown = Math.max(0, this.atkCooldown - dt);
     this.atkWindow = Math.max(0, this.atkWindow - dt);
-    if (!input.mouseDown) this.atkDidHit = false;
+    const attackDown = input.isTouch ? input.attackDown : input.mouseDown;
+    if (!attackDown) this.atkDidHit = false;
 
-    if (input.mouseDown && this.atkCooldown <= 0) {
+    if (attackDown && this.atkCooldown <= 0) {
       this.atkCooldown = 0.30;
       this.atkWindow = 0.12;
       this.atkDidHit = false;

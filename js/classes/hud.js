@@ -4,8 +4,9 @@ class HUD {
   /**
    * @param {Player} player
    */
-  constructor(player) {
+  constructor(player, input) {
     this.player = player;
+    this.input = input;
   }
 
   /**
@@ -72,5 +73,66 @@ class HUD {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(`${Math.ceil(this.player.hp)}`, cx, cy);
+
+    if (this.input && this.input.isTouch) {
+      const l = this.input.layout.leftCenter;
+      const r = this.input.layout.rightCenter;
+      const jr = this.input.layout.joyRadius;
+      const kr = this.input.layout.knobRadius;
+
+      this.drawJoystick(ctx, l.x, l.y, jr, kr, this.input.moveVec, dpr);
+      this.drawJoystick(ctx, r.x, r.y, jr, kr, this.input.lookVec, dpr);
+      this.drawAttackButton(ctx, this.input.layout.attackRect, dpr, this.input.attackDown);
+    }
+  }
+
+  drawJoystick(ctx, x, y, r, kr, vec, dpr) {
+    ctx.save();
+    ctx.globalAlpha = 0.6;
+    ctx.strokeStyle = "rgba(200,210,230,0.6)";
+    ctx.lineWidth = 2 * dpr;
+    ctx.beginPath();
+    ctx.arc(x * dpr, y * dpr, r * dpr, 0, TAU);
+    ctx.stroke();
+
+    ctx.fillStyle = "rgba(200,210,230,0.25)";
+    ctx.beginPath();
+    ctx.arc(x * dpr, y * dpr, r * dpr, 0, TAU);
+    ctx.fill();
+
+    const kx = (x + vec.x * r) * dpr;
+    const ky = (y + vec.y * r) * dpr;
+    ctx.fillStyle = "rgba(230,235,245,0.7)";
+    ctx.beginPath();
+    ctx.arc(kx, ky, kr * dpr, 0, TAU);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  drawAttackButton(ctx, rect, dpr, active) {
+    ctx.save();
+    ctx.globalAlpha = active ? 0.85 : 0.6;
+    ctx.fillStyle = "rgba(220,90,90,0.6)";
+    ctx.strokeStyle = "rgba(255,255,255,0.5)";
+    ctx.lineWidth = 2 * dpr;
+    const x = rect.x * dpr;
+    const y = rect.y * dpr;
+    const w = rect.w * dpr;
+    const h = rect.h * dpr;
+    const r = 12 * dpr;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
   }
 }
