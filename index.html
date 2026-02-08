@@ -22,7 +22,17 @@
     <div id="banner"><b>Выход найден.</b> Туман войны отключён.</div>
   </div>
 
-<script src="js/consts.js"></script>
+  <div id="menu">
+    <div id="menuCard">
+      <h1>Добро пожаловать в HTML Dungeon Crawler!</h1>
+      <button id="btnNew">Начать новую игру</button>
+      <button id="btnLoad">Загрузить игру</button>
+    </div>
+  </div>
+
+<script src="https://unpkg.com/localforage/dist/localforage.min.js"></script>
+  <script src="js/consts.js"></script>
+  <script src="js/globals.js"></script>
   <script src="js/tools.js"></script>
   <script src="js/classes/image.js"></script>
   <script src="js/classes/tileset.js"></script>
@@ -46,6 +56,16 @@
   <script src="js/classes/chest.js"></script>
   <script src="js/classes/projectile.js"></script>
   <script src="js/classes/trigger-zone.js"></script>
+  <script src="js/classes/entity-manager.js"></script>
+  <script src="js/classes/world.js"></script>
+  <script src="js/classes/collision.js"></script>
+  <script src="js/classes/dungeon-generator.js"></script>
+  <script src="js/classes/game-map.js"></script>
+  <script src="js/classes/fog-of-war.js"></script>
+  <script src="js/classes/input-manager.js"></script>
+  <script src="js/classes/camera.js"></script>
+  <script src="js/classes/hud.js"></script>
+  <script src="js/classes/game.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>

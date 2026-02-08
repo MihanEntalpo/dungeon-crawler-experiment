@@ -33,7 +33,7 @@ class Entity {
     this.world = opts.world || null;
   }
 
-  update(_dt) {}
+  update(_dt, _world) {}
   render(_ctx) {}
   onInteract(_actor) {}
   onRemove() {}
