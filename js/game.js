@@ -5,7 +5,7 @@
   const canvas = document.getElementById("c");
   const ctx = canvas.getContext("2d", { alpha: false });
 
-  let W = 1280, H = 720, DPR = 1;
+  let W = DEFAULT_W, H = DEFAULT_H, DPR = DEFAULT_DPR;
   function resize() {
     DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
     W = Math.floor(innerWidth * DPR);
@@ -70,7 +70,7 @@
     }
 
     // Carve rooms (rectangles in tile-space)
-    const roomCount = Math.max(14, Math.floor((cw * ch) / 70));
+    const roomCount = Math.max(ROOM_MIN, Math.floor((cw * ch) / ROOM_DENSITY_DIV));
     for (let i = 0; i < roomCount; i++) {
       const rw = rndInt(2, 5);
       const rh = rndInt(2, 5);
@@ -84,7 +84,7 @@
     }
 
     // Add loops by opening some wall-tiles that separate floors
-    const loopProb = 0.16;
+    const loopProb = LOOP_PROB;
     for (let y = 1; y < th - 1; y++) {
       for (let x = 1; x < tw - 1; x++) {
         if (tiles[y][x] !== WALL) continue;
@@ -101,7 +101,7 @@
     }
 
     // Reduce dead-ends ("braiding")
-    const ddPasses = 2;
+    const ddPasses = DEAD_END_PASSES;
     for (let pass = 0; pass < ddPasses; pass++) {
       for (let y = 2; y < th - 2; y++) {
         for (let x = 2; x < tw - 2; x++) {
@@ -137,9 +137,6 @@
   }
 
   // ---------- World ----------
-  const TILE = 32;
-  const CELLS_W = 56;
-  const CELLS_H = 46;
   const dungeon = genDungeon(CELLS_W, CELLS_H);
 
   const MAP_W = dungeon.tw;
@@ -190,11 +187,6 @@
     atkDidHit: false,
   };
 
-  const MOB_TYPES = [
-    { name: "green",  color: "#6CFF9C", hp: 120, dmg: 10,  speed: 34, aggro: 210 },
-    { name: "yellow", color: "#FFD36A", hp: 240, dmg: 20, speed: 40, aggro: 270 },
-    { name: "red",    color: "#FF5566", hp: 480, dmg: 25, speed: 46, aggro: 400 },
-  ];
   function pickMobType() {
     const r = Math.random();
     if (r < 0.55) return MOB_TYPES[0];
@@ -235,7 +227,6 @@
     return { x: player.x + minDist, y: player.y };
   }
 
-  const MOB_COUNT = 100;
   for (let i = 0; i < MOB_COUNT; i++) {
     const p = randomFloorPosFarFromPlayer(380);
     mobs.push(makeMob(p.x, p.y, pickMobType()));
@@ -315,9 +306,6 @@
   }
 
   // ---------- Tile-based visibility (ray casting) ----------
-  const VIS_DIST = 360;
-  const VIS_RAYS = 420;
-  const VIS_STEP = TILE / 6;
 
   function computeVisibility() {
     visible.fill(0);

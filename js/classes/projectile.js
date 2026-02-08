@@ -1,0 +1,11 @@
+"use strict";
+
+class Projectile extends Entity {
+  constructor(opts = {}) {
+    super(opts);
+    this.ttl = opts.ttl || 0;
+    this.damage = opts.damage || 0;
+  }
+
+  onHit(_target) {}
+}
