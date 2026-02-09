@@ -33,8 +33,8 @@ class Player extends Actor {
     const input = world.input;
     const camera = world.camera;
     const map = world.map;
-    if (input.isTouch && input.lookActive) {
-      this.facing = input.lookAngle;
+    if (input.isTouch) {
+      if (input.lookActive) this.facing = input.lookAngle;
     } else {
       const mxWorld = camera.x + (input.mouseX / input.dpr);
       const myWorld = camera.y + (input.mouseY / input.dpr);
