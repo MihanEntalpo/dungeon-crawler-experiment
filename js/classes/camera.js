@@ -18,9 +18,14 @@ class Camera {
   computeTarget(player, input, screenW, screenH, worldW, worldH) {
     let mx = input.mouseX / input.dpr;
     let my = input.mouseY / input.dpr;
-    if (input.isTouch && !input.lookActive) {
-      mx = screenW * 0.5;
-      my = screenH * 0.5;
+    if (input.isTouch) {
+      const dir = { x: Math.cos(player.facing), y: Math.sin(player.facing) };
+      const offset = Math.min(screenW, screenH) / 5;
+      const focusX = player.x + dir.x * offset;
+      const focusY = player.y + dir.y * offset;
+      const tx = clamp(focusX - screenW * 0.5, 0, Math.max(0, worldW - screenW));
+      const ty = clamp(focusY - screenH * 0.5, 0, Math.max(0, worldH - screenH));
+      return { tx, ty };
     }
 
     const camTargetX = player.x + 0.5 * mx - 0.75 * screenW;
@@ -43,7 +48,7 @@ class Camera {
    */
   update(dt, player, input, screenW, screenH, worldW, worldH) {
     const { tx, ty } = this.computeTarget(player, input, screenW, screenH, worldW, worldH);
-    const k = 9.0;
+    const k = 5.0;
     const a = 1 - Math.exp(-k * dt);
     this.x = lerp(this.x, tx, a);
     this.y = lerp(this.y, ty, a);
