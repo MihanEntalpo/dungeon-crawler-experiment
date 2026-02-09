@@ -16,8 +16,9 @@ class HUD {
    * @param {number} dpr
    */
   render(ctx, screenW, screenH, dpr) {
+    const isTouch = this.input && this.input.isTouch;
     const cx = 64 * dpr;
-    const cy = (screenH * dpr - 64 * dpr);
+    const cy = isTouch ? (64 * dpr) : (screenH * dpr - 64 * dpr);
     const R = 42 * dpr;
     const t = clamp(this.player.hp / this.player.hpMax, 0, 1);
 

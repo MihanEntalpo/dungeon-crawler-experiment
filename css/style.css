@@ -7,14 +7,15 @@
       display: grid; grid-template-rows: auto 1fr auto;
       padding: 12px;
     }
-    #topLeft {
-      color: rgba(230,235,245,0.9);
-      font-size: 13px;
-      line-height: 1.35;
-      text-shadow: 0 1px 0 rgba(0,0,0,0.6);
-      user-select: none;
-      max-width: 620px;
-    }
+#topLeft {
+  color: rgba(230,235,245,0.9);
+  font-size: 13px;
+  line-height: 1.35;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6);
+  user-select: none;
+  max-width: 620px;
+}
+#topLeft.hidden { display: none; }
 #banner {
       justify-self: center;
       align-self: start;

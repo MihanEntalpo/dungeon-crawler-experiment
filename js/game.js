@@ -7,6 +7,7 @@
   const btnLoad = document.getElementById("btnLoad");
   const pause = document.getElementById("pause");
   const btnResume = document.getElementById("btnResume");
+  const controlsHint = document.getElementById("controlsHint");
 
   localforage.config({ name: "dungeon-crawler-experiment", storeName: "save" });
 
@@ -23,6 +24,9 @@
   }
 
   if (!cachedMap) btnLoad.disabled = true;
+  if (controlsHint && (("ontouchstart" in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia("(pointer: coarse)").matches))) {
+    controlsHint.parentElement?.classList.add("hidden");
+  }
 
   async function enterFullscreenIfMobile() {
     const isTouch = ("ontouchstart" in window)
