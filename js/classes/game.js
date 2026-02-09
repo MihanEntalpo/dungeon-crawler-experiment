@@ -90,6 +90,13 @@ class Game {
     this.canvas.height = this.H;
     this.input.setDPR(this.DPR);
     this.input.setScreen(this.W / this.DPR, this.H / this.DPR, this.DPR);
+    const screenW = this.W / this.DPR;
+    const screenH = this.H / this.DPR;
+    const worldW = this.map.w * TILE;
+    const worldH = this.map.h * TILE;
+    const { tx, ty } = this.camera.computeTarget(this.player, this.input, screenW, screenH, worldW, worldH);
+    this.camera.x = tx;
+    this.camera.y = ty;
   }
 
   pickMobType() {

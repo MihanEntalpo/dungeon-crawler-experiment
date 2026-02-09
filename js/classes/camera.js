@@ -16,8 +16,12 @@ class Camera {
    * @returns {{tx:number, ty:number}}
    */
   computeTarget(player, input, screenW, screenH, worldW, worldH) {
-    const mx = input.mouseX / input.dpr;
-    const my = input.mouseY / input.dpr;
+    let mx = input.mouseX / input.dpr;
+    let my = input.mouseY / input.dpr;
+    if (input.isTouch && !input.lookActive) {
+      mx = screenW * 0.5;
+      my = screenH * 0.5;
+    }
 
     const camTargetX = player.x + 0.5 * mx - 0.75 * screenW;
     const camTargetY = player.y + 0.5 * my - 0.75 * screenH;
