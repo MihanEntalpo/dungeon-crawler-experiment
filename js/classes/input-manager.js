@@ -22,7 +22,6 @@ class InputManager {
 
     this.leftId = null;
     this.rightId = null;
-    this.attackId = null;
 
     this.layout = {
       screenW: 0,
@@ -87,14 +86,7 @@ class InputManager {
     this.layout.rightCenter = { x: screenW - pad, y: screenH - pad };
     this.layout.joyRadius = 62;
     this.layout.knobRadius = 24;
-    const btnW = 120;
-    const btnH = 52;
-    this.layout.attackRect = {
-      x: (screenW - btnW) / 2,
-      y: screenH - btnH - 16,
-      w: btnW,
-      h: btnH,
-    };
+    this.layout.attackRect = { x: 0, y: 0, w: 0, h: 0 };
   }
 
   onTouchStart(e) {
@@ -104,11 +96,6 @@ class InputManager {
     for (const t of Array.from(e.changedTouches)) {
       const x = (t.clientX - r.left);
       const y = (t.clientY - r.top);
-      if (this.isInRect(x, y, this.layout.attackRect) && this.attackId === null) {
-        this.attackId = t.identifier;
-        this.attackDown = true;
-        continue;
-      }
       if (x < this.layout.screenW * 0.5 && this.leftId === null) {
         this.leftId = t.identifier;
         this.updateMove(x, y);
@@ -117,6 +104,7 @@ class InputManager {
       if (x >= this.layout.screenW * 0.5 && this.rightId === null) {
         this.rightId = t.identifier;
         this.updateLook(x, y);
+        this.attackDown = true;
       }
     }
   }
@@ -148,9 +136,6 @@ class InputManager {
         this.lookActive = false;
         this.lookVec.x = 0;
         this.lookVec.y = 0;
-      }
-      if (t.identifier === this.attackId) {
-        this.attackId = null;
         this.attackDown = false;
       }
     }
@@ -185,7 +170,4 @@ class InputManager {
     this.lookAngle = Math.atan2(dy, dx);
   }
 
-  isInRect(x, y, rect) {
-    return x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
-  }
 }

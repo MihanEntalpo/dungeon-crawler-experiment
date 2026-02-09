@@ -82,7 +82,6 @@ class HUD {
 
       this.drawJoystick(ctx, l.x, l.y, jr, kr, this.input.moveVec, dpr);
       this.drawJoystick(ctx, r.x, r.y, jr, kr, this.input.lookVec, dpr);
-      this.drawAttackButton(ctx, this.input.layout.attackRect, dpr, this.input.attackDown);
     }
   }
 
@@ -109,30 +108,4 @@ class HUD {
     ctx.restore();
   }
 
-  drawAttackButton(ctx, rect, dpr, active) {
-    ctx.save();
-    ctx.globalAlpha = active ? 0.85 : 0.6;
-    ctx.fillStyle = "rgba(220,90,90,0.6)";
-    ctx.strokeStyle = "rgba(255,255,255,0.5)";
-    ctx.lineWidth = 2 * dpr;
-    const x = rect.x * dpr;
-    const y = rect.y * dpr;
-    const w = rect.w * dpr;
-    const h = rect.h * dpr;
-    const r = 12 * dpr;
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-    ctx.restore();
-  }
 }
