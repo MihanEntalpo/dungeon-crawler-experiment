@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dungeon Debug Classes</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="debugToolbar">
+    <label>
+      Seed генерации
+      <input id="seedInput" type="text" placeholder="seed" />
+    </label>
+    <label>
+      <input id="rotateToggle" type="checkbox" />
+      Вращение
+    </label>
+    <button id="regenBtn">Перегенерировать</button>
+    <label>
+      Углы (экспорт)
+      <textarea id="polyEulerDump" rows="8" spellcheck="false" readonly></textarea>
+    </label>
+  </div>
+
+  <div id="debugPolyPanel"></div>
+
+  <div id="wrap">
+    <canvas id="c"></canvas>
+  </div>
+
+  <div id="hud">
+    <div id="topLeft">
+      <div><b>Debug:</b> статический рендер карты</div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/localforage/dist/localforage.min.js"></script>
+  <script src="js/consts.js"></script>
+  <script src="js/globals.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/meshes.js"></script>
+  <script src="js/classes/image.js"></script>
+  <script src="js/classes/tileset.js"></script>
+  <script src="js/classes/animation.js"></script>
+  <script src="js/classes/drawer.js"></script>
+  <script src="js/classes/polyhedron-drawer.js"></script>
+  <script src="js/classes/map-tile.js"></script>
+  <script src="js/classes/fog-tile.js"></script>
+  <script src="js/classes/dungeon-wall-tile.js"></script>
+  <script src="js/classes/dungeon-floor-tile.js"></script>
+  <script src="js/classes/dungeon-wood-door-tile.js"></script>
+  <script src="js/classes/town-wall-tile.js"></script>
+  <script src="js/classes/town-wood-building-tile.js"></script>
+  <script src="js/classes/town-grass-tile.js"></script>
+  <script src="js/classes/town-road-tile.js"></script>
+  <script src="js/classes/entity.js"></script>
+  <script src="js/classes/actor.js"></script>
+  <script src="js/classes/player.js"></script>
+  <script src="js/classes/npc.js"></script>
+  <script src="js/classes/enemy.js"></script>
+  <script src="js/classes/ground-item.js"></script>
+  <script src="js/classes/chest.js"></script>
+  <script src="js/classes/projectile.js"></script>
+  <script src="js/classes/trigger-zone.js"></script>
+  <script src="js/classes/entity-manager.js"></script>
+  <script src="js/classes/world.js"></script>
+  <script src="js/classes/collision.js"></script>
+  <script src="js/classes/dungeon-generator.js"></script>
+  <script src="js/classes/game-map.js"></script>
+  <script src="js/classes/fog-of-war.js"></script>
+  <script src="js/classes/input-manager.js"></script>
+  <script src="js/classes/camera.js"></script>
+  <script src="js/classes/hud.js"></script>
+  <script src="js/classes/game.js"></script>
+  <script src="js/debug-classes.js"></script>
+</body>
+</html>
