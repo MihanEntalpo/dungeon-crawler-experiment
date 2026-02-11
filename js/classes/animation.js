@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Хранит набор кадров и параметры анимации.
+ */
 class Animation {
   /**
    * @param {object} opts

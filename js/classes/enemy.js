@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Враг: ИИ преследования/атаки и рендер.
+ */
 class Enemy extends Actor {
   /**
    * @param {object} opts

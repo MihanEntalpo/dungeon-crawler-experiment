@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Предмет на земле: хранит itemId и количество.
+ */
 class GroundItem extends Entity {
   constructor(opts = {}) {
     super(opts);

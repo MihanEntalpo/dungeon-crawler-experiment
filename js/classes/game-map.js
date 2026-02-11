@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Карта: хранит тайлы и рисует видимую область.
+ */
 class GameMap {
   /**
    * @param {{tiles:number[][], tw:number, th:number, WALL:number, FLOOR:number}} data

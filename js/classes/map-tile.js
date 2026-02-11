@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Базовый тайл карты с проходимостью, светопропусканием и Drawer.
+ */
 class MapTile {
   /**
    * @param {object} opts

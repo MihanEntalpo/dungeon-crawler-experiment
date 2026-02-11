@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Хранение сущностей и централизованный update/render.
+ */
 class EntityManager {
   constructor() {
     this.entities = [];

@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Туман войны: вычисление видимости и отрисовка.
+ */
 class FogOfWar {
   /**
    * @param {GameMap} map

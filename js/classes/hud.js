@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * HUD: отрисовка интерфейсных элементов (HP, джойстики).
+ */
 class HUD {
   /**
    * @param {Player} player

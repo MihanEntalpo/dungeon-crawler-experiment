@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Единый интерфейс рендера сущностей/тайлов с возможностью кастомного render.
+ */
 class Drawer {
   /**
    * @param {object} opts

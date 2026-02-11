@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Ввод: клавиатура/мышь + touch-джойстики.
+ */
 class InputManager {
   /**
    * @param {HTMLCanvasElement} canvas

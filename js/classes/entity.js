@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Базовая сущность мира: позиция, коллизии и активный Drawer.
+ */
 class Entity {
   /**
    * @param {object} opts

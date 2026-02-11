@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Основной игровой цикл: инициализация и кадр.
+ */
 class Game {
   /**
    * @param {HTMLCanvasElement} canvas

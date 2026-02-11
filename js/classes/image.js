@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Базовая единица изображения: хранит метаданные и источник картинки (url/base64/тайлсет).
+ */
 class ImageAsset {
   /**
    * @param {object} opts

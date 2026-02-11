@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Контейнер с лутом и состоянием открытия.
+ */
 class Chest extends Entity {
   constructor(opts = {}) {
     super(opts);

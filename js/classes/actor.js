@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Движимая сущность с боевыми параметрами (hp, скорость, урон).
+ */
 class Actor extends Entity {
   /**
    * @param {object} opts

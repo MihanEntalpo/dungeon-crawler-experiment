@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Камера: расчёт целевой позиции и плавное следование.
+ */
 class Camera {
   constructor() {
     this.x = 0;

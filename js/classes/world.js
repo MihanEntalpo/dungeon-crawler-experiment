@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Мир: объединяет карту, туман, сущности и HUD.
+ */
 class World {
   /**
    * @param {GameMap} map

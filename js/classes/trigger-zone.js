@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Невидимая зона-триггер с колбэками входа/выхода.
+ */
 class TriggerZone extends Entity {
   constructor(opts = {}) {
     super(opts);

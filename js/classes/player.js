@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Игрок: управление, атаки и визуальная логика.
+ */
 class Player extends Actor {
   /**
    * @param {object} opts
