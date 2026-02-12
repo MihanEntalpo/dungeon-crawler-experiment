@@ -63,15 +63,20 @@
     return `hsl(${h}, 70%, 60%)`;
   }
 
-  function generatePolyhedrons(rng, map) {
+  const POLY_SMALL_SIZE = TILE;
+  const POLY_LARGE_SIZE = TILE * 2;
+  const POLY_SMALL_START_X = 1;
+  const POLY_SMALL_START_Y = 16;
+  const POLY_LARGE_START_X = 1;
+  const POLY_LARGE_START_Y = 20;
+  const POLY_LARGE_STEP = 2;
+
+  function generatePolyhedrons(rng) {
     const names = PolyHedronDrawer.allowedNames;
     const items = [];
-    const startX = 1;
-    const startY = 16;
     for (let i = 0; i < names.length; i++) {
-      const x = startX + i;
-      const y = startY;
-      if (x >= map.w - 1) break;
+      const x = POLY_SMALL_START_X + i;
+      const y = POLY_SMALL_START_Y;
       const drawer = new PolyHedronDrawer({
         name: names[i],
         color: randomColor(rng),
@@ -83,9 +88,36 @@
         drawer,
         x: (x + 0.5) * TILE,
         y: (y + 0.5) * TILE,
+        renderSize: POLY_SMALL_SIZE,
         rotation: 0,
         euler: { x: 0, y: 0, z: 0 },
         userEuler: { x: 0, y: 0, z: 0 },
+      });
+    }
+    return items;
+  }
+
+  function generateLargePolyhedrons(baseItems) {
+    const items = [];
+    for (let i = 0; i < baseItems.length; i++) {
+      const src = baseItems[i];
+      const x = POLY_LARGE_START_X + (i * POLY_LARGE_STEP);
+      const y = POLY_LARGE_START_Y;
+      const drawer = new PolyHedronDrawer({
+        name: src.name,
+        color: src.drawer.color,
+        rotation: 0,
+        euler: { x: 0, y: 0, z: 0 },
+      });
+      items.push({
+        name: src.name,
+        drawer,
+        x: (x + 0.5) * TILE,
+        y: (y + 0.5) * TILE,
+        renderSize: POLY_LARGE_SIZE,
+        rotation: src.rotation,
+        euler: { ...src.euler },
+        syncFrom: src,
       });
     }
     return items;
@@ -121,9 +153,10 @@
         entityManager.add(enemy);
       }
 
-      const polyhedrons = generatePolyhedrons(rng, map);
+      const polyhedrons = generatePolyhedrons(rng);
+      const polyhedronsLarge = generateLargePolyhedrons(polyhedrons);
 
-      return { map, entityManager, player, polyhedrons };
+      return { map, entityManager, player, polyhedrons, polyhedronsLarge };
     });
   }
 
@@ -135,6 +168,16 @@
     current.entityManager.render(ctx, 0, 0, DPR);
 
     for (const p of current.polyhedrons) {
+      p.drawer.rotation = p.rotation;
+      p.drawer.euler = p.euler;
+      p.drawer.render(ctx, p, 0, 0, DPR);
+    }
+
+    for (const p of current.polyhedronsLarge) {
+      if (p.syncFrom) {
+        p.rotation = p.syncFrom.rotation;
+        p.euler = { ...p.syncFrom.euler };
+      }
       p.drawer.rotation = p.rotation;
       p.drawer.euler = p.euler;
       p.drawer.render(ctx, p, 0, 0, DPR);

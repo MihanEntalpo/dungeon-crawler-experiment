@@ -60,7 +60,10 @@ class PolyHedronDrawer extends Drawer {
   render(ctx, ent, camX, camY, dpr) {
     const cx = (ent.x - camX) * dpr;
     const cy = (ent.y - camY) * dpr;
-    const baseR = (TILE * 0.42) * dpr;
+    const renderSize = (typeof ent.renderSize === "number" && ent.renderSize > 0)
+      ? ent.renderSize
+      : TILE;
+    const baseR = (renderSize * 0.42) * dpr;
     const rot = this.rotation + (ent.rotation || 0);
     const euler = {
       x: this.euler.x + (ent.euler?.x || 0),
@@ -105,26 +108,32 @@ class PolyHedronDrawer extends Drawer {
 
   renderMesh(ctx, cx, cy, baseR, euler, mesh) {
     const lightDir = PolyHedronDrawer.norm({ x: -1, y: -1, z: 1 });
+    const viewDir = { x: 0, y: 0, z: 1 };
     const verts = mesh.verts.map((v) => PolyHedronDrawer.rotateEuler(v, euler));
 
-    const scale = baseR / PolyHedronDrawer.maxRadiusXY(verts);
+    const scale = baseR / PolyHedronDrawer.getStableScaleRadius(mesh);
     const scaled = verts.map((v) => ({ x: v.x * scale, y: v.y * scale, z: v.z * scale }));
 
     const faces = mesh.faces.map((f) => {
       const vs = f.map((i) => scaled[i]);
       let n = PolyHedronDrawer.faceNormal(vs[0], vs[1], vs[2]);
-      const c = PolyHedronDrawer.faceCentroid(vs);
-      if (PolyHedronDrawer.dot(n, c) < 0) {
-        n = { x: -n.x, y: -n.y, z: -n.z };
-        f = [...f].reverse();
+      if (!mesh.skipAutoNormalFlip) {
+        const c = PolyHedronDrawer.faceCentroid(vs);
+        if (PolyHedronDrawer.dot(n, c) < 0) {
+          n = { x: -n.x, y: -n.y, z: -n.z };
+          f = [...f].reverse();
+        }
       }
-      const dz = (vs[0].z + vs[1].z + vs[2].z) / 3;
+      let dz = 0;
+      for (const v of vs) dz += v.z;
+      dz /= (vs.length || 1);
       return { idx: f, verts: vs, normal: n, depth: dz };
     });
 
     faces.sort((a, b) => a.depth - b.depth);
 
     for (const f of faces) {
+      if (mesh.cullBackfaces && PolyHedronDrawer.dot(f.normal, viewDir) <= 0) continue;
       const shade = Math.max(0, PolyHedronDrawer.dot(f.normal, lightDir));
       const c = PolyHedronDrawer.tint(this.color, 0.35 + shade * 0.75);
       ctx.fillStyle = c;
@@ -201,10 +210,20 @@ class PolyHedronDrawer extends Drawer {
   static dot(a, b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
   }
-  static maxRadiusXY(verts) {
+
+  static getStableScaleRadius(mesh) {
+    if (typeof mesh.__stableScaleRadius === "number" && mesh.__stableScaleRadius > 0) {
+      return mesh.__stableScaleRadius;
+    }
+    const radius = PolyHedronDrawer.maxRadiusXYZ(mesh.verts || []);
+    mesh.__stableScaleRadius = radius;
+    return radius;
+  }
+
+  static maxRadiusXYZ(verts) {
     let m = 1e-6;
     for (const v of verts) {
-      const d = Math.hypot(v.x, v.y);
+      const d = Math.hypot(v.x, v.y, v.z);
       if (d > m) m = d;
     }
     return m;
