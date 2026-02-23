@@ -67,6 +67,6 @@ class World {
    */
   render(ctx, camX, camY, screenW, screenH, dpr) {
     this.map.draw(ctx, camX, camY, screenW, screenH, dpr);
-    this.entityManager.render(ctx, camX, camY, dpr);
+    this.entityManager.render(ctx, camX, camY, dpr, this);
   }
 }

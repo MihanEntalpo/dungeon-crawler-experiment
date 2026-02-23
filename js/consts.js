@@ -83,7 +83,7 @@ const MOB_COUNT = 100;
  * Дистанция видимости в пикселях.
  * @type {number}
  */
-const VIS_DIST = 360;
+const VIS_DIST = 60;
 
 /**
  * Количество лучей для вычисления видимости.
@@ -96,3 +96,43 @@ const VIS_RAYS = 420;
  * @type {number}
  */
 const VIS_STEP = TILE / 6;
+
+/**
+ * Режим "памяти видимости":
+ * true  — ранее увиденные, но не видимые сейчас тайлы затемняются полупрозрачно;
+ * false — используется старый режим (ранее увиденные тайлы остаются полностью яркими).
+ * @type {boolean}
+ */
+const FOG_MEMORY_MODE_ENABLED = true;
+
+/**
+ * Прозрачность затемнения для ранее увиденных, но не видимых сейчас тайлов.
+ * Используется только если FOG_MEMORY_MODE_ENABLED = true.
+ * @type {number}
+ */
+const FOG_MEMORY_ALPHA = 0.62;
+
+/**
+ * Прозрачность полной темноты для неразведанных тайлов.
+ * @type {number}
+ */
+const FOG_UNSEEN_ALPHA = 0.98;
+
+/**
+ * Скрывать врагов во всех не видимых прямо сейчас тайлах
+ * (и в полной темноте, и в полупрозрачной "памяти").
+ * @type {boolean}
+ */
+const FOG_HIDE_ENEMIES_OUTSIDE_VISIBLE = true;
+
+/**
+ * Плавно затемнять клетку при переходе из "видимой" в "скрытую".
+ * @type {boolean}
+ */
+const FOG_VISIBILITY_FADE_ENABLED = true;
+
+/**
+ * Длительность fade (в миллисекундах) при переходе visible -> hidden.
+ * @type {number}
+ */
+const FOG_VISIBILITY_FADE_MS = 1000;

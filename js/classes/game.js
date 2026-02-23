@@ -137,7 +137,11 @@ class Game {
 
     this.world.update(dt);
 
-    if (this.fogEnabled) this.fog.computeVisibility(this.player);
+    if (this.fogEnabled) {
+      this.fog.computeVisibility(this.player);
+      this.fog.updateFade(dt);
+    }
+    this.entities.updateFogVisibilityFade(dt, this.world, this.fogEnabled);
 
     this.player.applyAttack(this.world);
 
@@ -157,6 +161,8 @@ class Game {
     if (this.fogEnabled && hypot(this.player.x - ex, this.player.y - ey) < 22) {
       this.fogEnabled = false;
       this.fog.explored.fill(1);
+      this.fog.visible.fill(1);
+      this.fog.overlayAlpha.fill(0);
       this.banner.classList.add("show");
     }
   }
